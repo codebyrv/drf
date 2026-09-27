@@ -20,11 +20,8 @@ class HelloApi(APIView):
 
 class StudentView(APIView):
     def get(self,request):
-        
-        student=Student.objects.all()
-        
+        student=Student.objects.all()        
         serializer=StudentSerializer(student,many=True)
-        
         return Response(data=serializer.data)
 
     def post(self,request,*args, **kwargs):
@@ -42,3 +39,13 @@ class StudentView(APIView):
         return Response({"data":"data added successfully"})
     
     
+    
+class StudentDetailView(APIView):
+        
+    def get(self,request,id):
+            
+            student=Student.objects.get(id=id)
+            
+            serializer=StudentSerializer(student)
+            
+            return Response(data=serializer.data)
