@@ -25,27 +25,26 @@ class StudentView(APIView):
         return Response(data=serializer.data)
 
     def post(self,request,*args, **kwargs):
-        
         # Serializer=StudentSerializer(data=request.data)
-        
         name=request.data.get("name")  
         dob=request.data.get("dob")  
         age=request.data.get("age")  
         place=request.data.get("place")
-
-        
         student=Student.objects.create(name=name,dob=dob,age=age,place=place)
-        
         return Response({"data":"data added successfully"})
-    
-    
-    
-class StudentDetailView(APIView):
-        
+   
+class StudentDetailView(APIView):  
     def get(self,request,id):
-            
             student=Student.objects.get(id=id)
-            
             serializer=StudentSerializer(student)
-            
             return Response(data=serializer.data)
+        
+    def delete(self,request,id):
+        student=Student.objects.get(id=id)
+        
+        student.delete()
+        
+        return Response({"msg":"data deleted"})
+        
+      
+         
