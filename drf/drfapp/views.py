@@ -7,6 +7,8 @@ from rest_framework.views import APIView
 from drfapp.models import*
 
 from drfapp.serializers import StudentSerializer
+
+from rest_framework import status
 # Create your views here.
 
 
@@ -31,20 +33,24 @@ class StudentView(APIView):
         age=request.data.get("age")  
         place=request.data.get("place")
         student=Student.objects.create(name=name,dob=dob,age=age,place=place)
-        return Response({"data":"data added successfully"})
+        return Response({"data":"data added successfully"},status=status.HTTP_200_OK)
    
 class StudentDetailView(APIView):  
-    def get(self,request,id):
+    def get(self,request,id): 
+        try:
             student=Student.objects.get(id=id)
             serializer=StudentSerializer(student)
             return Response(data=serializer.data)
-        
+        except:  
+            return Response({'invalid data'},status=status.HTTP_404_NOT_FOUND)
     def delete(self,request,id):
-        student=Student.objects.get(id=id)
-        
-        student.delete()
-        
-        return Response({"msg":"data deleted"})
+        try:
+            student=Student.objects.get(id=id)
+            student.delete()
+            return Response({"msg":"data deleted"})
+        except: 
+            return Response({"msg":"matching query doesnot exists"},status=status.HTTP_404_NOT_FOUND)
+    
         
       
          
