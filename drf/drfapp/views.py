@@ -52,5 +52,27 @@ class StudentDetailView(APIView):
             return Response({"msg":"matching query doesnot exists"},status=status.HTTP_404_NOT_FOUND)
     
         
-      
-         
+    def put(self,request,id):
+        
+        # try:
+           student=Student.objects.get(id=id)
+            
+           name=request.data.get("name")
+           dob=request.data.get("dob")
+           age=request.data.get("age")
+           place=request.data.get("place")
+
+           student.name=name
+           student.dob=dob
+           student.age=age  
+           student.place=place
+           
+           student.save()
+           
+           return Response({"msg":"updated successfully"})
+    
+        # except:
+            
+        #    return Response({"msg":"not matching"}) 
+        
+           
