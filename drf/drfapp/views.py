@@ -10,21 +10,27 @@ from drfapp.serializers import StudentSerializer
 
 from rest_framework import status
 # Create your views here.
-
-
 class HelloApi(APIView):
-
     def get(self,request):
-        
         return Response({"message":"hello DRF"})
-
-
-
 class StudentView(APIView):
     def get(self,request):
-        student=Student.objects.all()        
-        serializer=StudentSerializer(student,many=True)
-        return Response(data=serializer.data)
+        try:
+            student=Student.objects.all()        
+            serializer=StudentSerializer(student,many=True)
+            return Response(data=serializer.data)
+        
+        except:
+            
+            return Response({"msg":"no data avaialble"})
+        
+    def delete(self,request):
+        try:
+            student=Student.objects.all().delete()
+            # student.delete()
+            return Response({"msg":"all data deleted"})
+        except: 
+            return Response({"msg":"matching query doesnot exists"},status=status.HTTP_404_NOT_FOUND)
 
     def post(self,request,*args, **kwargs):
         # Serializer=StudentSerializer(data=request.data)
@@ -53,26 +59,20 @@ class StudentDetailView(APIView):
     
         
     def put(self,request,id):
-        
-        # try:
-           student=Student.objects.get(id=id)
-            
+        try:
+           student=Student.objects.get(id=id) 
            name=request.data.get("name")
            dob=request.data.get("dob")
            age=request.data.get("age")
            place=request.data.get("place")
-
            student.name=name
            student.dob=dob
            student.age=age  
            student.place=place
-           
            student.save()
            
            return Response({"msg":"updated successfully"})
-    
-        # except:
-            
-        #    return Response({"msg":"not matching"}) 
+        except:  
+           return Response({"msg":"not matching"}) 
         
            
