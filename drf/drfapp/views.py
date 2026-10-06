@@ -83,56 +83,32 @@ class HelloApi(APIView):
 #class Using Modelserializer           
 
 class StudentModelView(APIView):
-    
     def get(self,reqeust,*args, **kwargs):
-        
-        
         try:
             student=Student.objects.all()
             serailzer=StudentModelSerializers(student,many=True)
             return Response(data=serailzer.data)
-        
         except:
-            
-            
             return Response({"msg":"no data available"})
-        
     def post(self,request,*args, **kwargs):
-        
         try:
             serializer=StudentModelSerializers(data=request.data)
-            
             if serializer.is_valid():
-                
                 serializer.save()
-                
             return Response({"msg":"data createdd"})
         except:
             return Response({"msg":"error"})    
-
 class StudentModelDetailView(APIView):
-    
     def get(self,request,id):
         student=Student.objects.get(id=id)
-        
-       
-        
         serialzer=StudentModelSerializers(student)
-        
         return Response(data=serialzer.data)
-            
-            
     def put(self,request,id):
-        
         student=Student.objects.get(id=id)
         serializer=StudentModelSerializers(data=request.data,instance=student)
-        
         if serializer.is_valid():
-            
             serializer.save()
-            
         return Response({"msg":"student updated"})
-    
     def delete(self,request,id):
         try:
             student=Student.objects.get(id=id)
