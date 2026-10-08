@@ -7,7 +7,8 @@ from rest_framework.views import APIView
 from drfapp.models import*
 
 # from drfapp.serializers import StudentSerializer
-from drfapp.serializers import StudentModelSerializers
+# from drfapp.serializers import StudentModelSerializers,RegisterSerializer
+from drfapp.serializers import*
 
 from rest_framework import status
 # Create your views here.
@@ -121,6 +122,34 @@ class StudentModelDetailView(APIView):
     
     
     
+class RegisterView(APIView):
     
+    def post(self,request):
+        
+        serializer=RegisterSerializer(data=request.data)
+        
+        if serializer.is_valid():
+            
+            # serializer.save()
+            
+            first_name=serializer.validated_data.get("first_name")
+            last_name=serializer.validated_data.get("last_name")
+            username=serializer.validated_data.get("username")
+            email=serializer.validated_data.get("email")
+            password=serializer.validated_data.get("password")
+            
+            User.objects.create_user(first_name=first_name,last_name=last_name,username=username,email=email,password=password)
+            
+            
+            return Response(data=serializer.data)
+        
+        else:
+            
+            return Response(data=serializer.errors)
+           
+            
+            
+        
+            
         
                   
