@@ -109,7 +109,7 @@ class StudentModelDetailView(APIView):
         serializer=StudentModelSerializers(data=request.data,instance=student)
         if serializer.is_valid():
             serializer.save()
-        return Response({"msg":"student updated"})
+        return Response({"msg":"student updated success"})
     def delete(self,request,id):
         try:
             student=Student.objects.get(id=id)
