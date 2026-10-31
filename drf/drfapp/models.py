@@ -16,4 +16,14 @@ class Student(models.Model):
     
     
     
+class Profile(models.model):
     
+    user=models.OneToOneField(User,related_name='user',on_delete=models.CASCADE)
+    image=models.ImageField(upload_to='media')
+    dob=models.DateField()
+    
+    bio=models.TextField(max_length=100)
+    
+    def __str__(self):
+        return self.user
+        

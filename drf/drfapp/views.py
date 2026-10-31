@@ -140,7 +140,13 @@ class RegisterView(APIView):
             return Response(data=serializer.errors)
            
             
-            
+    def get(self,request):
+        
+        user=User.objects.all()
+        
+        serializer=RegisterSerializer(user,many=True)
+        
+        return Response(data=serializer.data)
         
             
         
